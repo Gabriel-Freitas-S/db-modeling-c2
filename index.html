@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guia completo de modelagem de banco de dados com SQLite - 10 contextos práticos de sistemas de informação">
+    <meta name="keywords" content="SQLite, Banco de Dados, Modelagem, SQL, Database, Tutorial">
+    <meta name="author" content="Projeto Prático">
+    <title>Guia Completo de Modelagem de Banco de Dados - SQLite</title>
+    <link rel="stylesheet" href="pagina/css/style.css">
+    <!-- Biblioteca Prism.js para syntax highlighting SQL -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <!-- Biblioteca Mermaid.js para renderizar diagramas -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        // Inicializa Mermaid com configurações
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'default',
+            securityLevel: 'loose'
+        });
+    </script>
+</head>
+<body>
+    <!-- Header Principal -->
+    <header class="header-principal">
+        <div class="container">
+            <h1 class="titulo-principal">📚 Guia Completo de Modelagem de Banco de Dados</h1>
+            <p class="subtitulo">Demonstração prática de 10 contextos de modelagem com SQLite - Visualização Educacional</p>
+        </div>
+    </header>
+
+    <!-- Navegação Rápida (Opcional) -->
+    <nav class="navegacao-contextos" id="navegacao-contextos">
+        <div class="container">
+            <div class="nav-links" id="nav-links">
+                <!-- Links serão gerados dinamicamente -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="conteudo-principal">
+        <div class="container">
+            
+            <!-- Introdução -->
+            <section class="secao-introducao">
+                <div class="card">
+                    <h2>📖 Sobre Este Guia</h2>
+                    <p>Este guia apresenta 10 contextos práticos de modelagem de banco de dados, desde sistemas simples até arquiteturas complexas. Cada contexto demonstra padrões e técnicas específicas de modelagem de dados.</p>
+                    <p>Role a página para explorar todos os contextos. Os diagramas MER são carregados automaticamente conforme você navega.</p>
+                </div>
+            </section>
+
+            <!-- Container para todos os contextos -->
+            <div id="contextos-container" class="contextos-container">
+                <!-- Os 10 contextos serão renderizados aqui dinamicamente -->
+                <div class="loading-inicial">
+                    <div class="loading-spinner"></div>
+                    <p>Carregando contextos...</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-principal">
+        <div class="container">
+            <div class="footer-conteudo">
+                <div class="footer-info">
+                    <h4>Sobre o Projeto</h4>
+                    <p>Este projeto demonstra 10 contextos práticos de modelagem de banco de dados usando SQLite.</p>
+                    <p>Desenvolvido para fins educacionais e de demonstração.</p>
+                </div>
+                <div class="footer-tecnologias">
+                    <h4>Tecnologias Utilizadas</h4>
+                    <ul>
+                        <li>HTML5</li>
+                        <li>CSS3</li>
+                        <li>JavaScript (ES6+)</li>
+                        <li>Mermaid.js (Diagramas)</li>
+                        <li>SQLite (Backend)</li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Links Úteis</h4>
+                    <ul>
+                        <li><a href="https://www.sqlite.org/" target="_blank" rel="noopener">SQLite Documentation</a></li>
+                        <li><a href="https://mermaid.js.org/" target="_blank" rel="noopener">Mermaid.js</a></li>
+                        <li><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2024 Projeto Prático - Modelagem de Banco de Dados. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Prism.js para syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="pagina/js/contextos-data.js"></script>
+    <script src="pagina/js/main.js"></script>
+</body>
+</html>

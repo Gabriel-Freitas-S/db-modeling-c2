@@ -1,6 +1,7 @@
 # 📚 DB Modeling C2 - Banco de Dados e Big Data
 
 ![Atividade C2](https://img.shields.io/badge/Atividade-C2%20-brightgreen.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![SQLite](https://img.shields.io/badge/SQLite-3.x-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.x-green.svg)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)
@@ -714,7 +715,9 @@ Contribuições são muito bem-vindas! Para contribuir:
 
 ## 📄 Licença
 
-Este projeto é de código aberto e está disponível para fins **educacionais** e de **aprendizado**.
+Este projeto está licenciado sob a **Licença MIT**.
+
+Consulte o arquivo [LICENSE](LICENSE) para obter mais detalhes.
 
 ---
 

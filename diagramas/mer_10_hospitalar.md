@@ -6,6 +6,7 @@ erDiagram
         INTEGER paciente_id PK
         TEXT nome
         TEXT data_nascimento
+        TEXT plano_saude
     }
     Medicos {
         TEXT crm PK
@@ -27,12 +28,14 @@ erDiagram
         INTEGER paciente_id FK
         TEXT medico_crm FK
         TEXT data_hora
+        TEXT diagnostico
     }
     Internacoes {
         INTEGER internacao_id PK
         INTEGER paciente_id FK
         INTEGER leito_id FK
         TEXT data_entrada
+        TEXT data_alta_prevista
         TEXT data_alta_efetiva
     }
     Exames {
@@ -41,6 +44,7 @@ erDiagram
         INTEGER consulta_id FK
         INTEGER internacao_id FK
         TEXT tipo_exame
+        TEXT data_solicitacao
         TEXT resultado
     }
 

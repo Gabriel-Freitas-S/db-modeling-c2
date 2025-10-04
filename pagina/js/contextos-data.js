@@ -838,12 +838,12 @@ CREATE TABLE HistoricoAlocacoes (
             }
         ],
         relacionamentos: [
-            { de: "Clientes", para: "Reservas", tipo: "1:N", descricao: "Um cliente faz múltiplas reservas" },
-            { de: "Veiculos", para: "Reservas", tipo: "1:N", descricao: "Um veículo é reservado múltiplas vezes" },
-            { de: "Clientes", para: "Locacoes", tipo: "1:N", descricao: "Um cliente realiza múltiplas locações" },
-            { de: "Veiculos", para: "Locacoes", tipo: "1:N", descricao: "Um veículo é locado múltiplas vezes" },
-            { de: "Reservas", para: "Locacoes", tipo: "1:1", descricao: "Uma reserva pode se concretizar em uma locação" },
-            { de: "Veiculos", para: "Manutencoes", tipo: "1:N", descricao: "Um veículo passa por múltiplas manutenções" }
+            { de: "Clientes", para: "Reservas", tipo: "1:N", descricao: "Um cliente pode realizar múltiplas reservas."},
+            { de: "Veiculos", para: "Reservas", tipo: "1:N", descricao: "Um veículo pode ser reservado múltiplas vezes." },
+            { de: "Clientes", para: "Locacoes", tipo: "1:N", descricao: "Um cliente pode realizar múltiplas locações." },
+            { de: "Veiculos", para: "Locacoes", tipo: "1:N", descricao: "Um veículo pode ser locado múltiplas vezes." },
+            { de: "Reservas", para: "Locacoes", tipo: "1:1", descricao: "Uma reserva pode se concretizar em, no máximo, uma locação." },
+            { de: "Veiculos", para: "Manutencoes", tipo: "1:N", descricao: "Um veículo pode passar por múltiplas manutenções." }
         ],
         diagramaMermaid: `erDiagram
     Clientes {
@@ -875,6 +875,8 @@ CREATE TABLE HistoricoAlocacoes (
         TEXT data_retirada
         TEXT data_devolucao
         REAL valor_total
+        INTEGER km_retirada
+        INTEGER km_devolucao
     }
     Manutencoes {
         INTEGER manutencao_id PK

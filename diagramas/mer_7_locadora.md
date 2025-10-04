@@ -31,6 +31,8 @@ erDiagram
         TEXT data_retirada
         TEXT data_devolucao
         REAL valor_total
+        INTEGER km_retirada
+        INTEGER km_devolucao
     }
     Manutencoes {
         INTEGER manutencao_id PK
@@ -50,20 +52,14 @@ erDiagram
 
 ## Entidades
 
-- **Clientes**: Cadastro dos locatários com CNH, nome e informações de contato
-- **Veiculos**: Frota de veículos com dados de identificação e status operacional
-- **Reservas**: Agendamento de futuras locações com datas previstas
-- **Locacoes**: Registro de locações efetivadas com quilometragem e valores
-- **Manutencoes**: Histórico de manutenções realizadas nos veículos
+- **Clientes**: Armazena os dados dos clientes da locadora, incluindo CNH, nome e informações de contato.
+- **Veiculos**: Contém as informações sobre os veículos da frota, como placa, modelo, marca e status (Disponível, Locado, Em Manutenção).
+- **Reservas**: Registra as reservas de veículos feitas pelos clientes para datas futuras.
+- **Locacoes**: Armazena o histórico de locações de veículos, incluindo datas, valores e quilometragem de retirada e devolução.
+- **Manutencoes**: Mantém o registro de manutenções realizadas nos veículos.
 
 ## Relacionamentos
 
-- Um **Cliente** pode fazer múltiplas **Reservas** e **Locacoes** (relacionamento 1:N)
-- Um **Veiculo** pode estar em múltiplas **Reservas**, **Locacoes** e **Manutencoes** ao longo do tempo (relacionamento 1:N)
-- Uma **Reserva** pode se concretizar em no máximo uma **Locacao** (relacionamento 1:1 opcional)
-- O campo `status` em **Veiculos** gerencia o ciclo de vida: 'Disponível', 'Locado', 'Em Manutenção'
-- Este modelo complexo permite:
-  - Gerenciar reservas futuras
-  - Rastrear histórico completo de locações por veículo e cliente
-  - Manter registro de manutenções preventivas e corretivas
-  - Controlar disponibilidade da frota em tempo real
+-   **Clientes e Reservas/Locações (1:N)**: Um cliente pode realizar múltiplas reservas e locações. Isso é representado pelas chaves estrangeiras `cliente_cnh` nas tabelas `Reservas` e `Locacoes`.
+-   **Veículos e Reservas/Locações/Manutenções (1:N)**: Um veículo pode estar associado a múltiplas reservas, locações e manutenções ao longo do tempo. Representado pelas chaves estrangeiras `veiculo_placa` nas tabelas `Reservas`, `Locacoes` e `Manutencoes`.
+-   **Reservas e Locações (1:1 opcional)**: Uma reserva pode ser convertida em, no máximo, uma locação. A chave estrangeira `reserva_id` na tabela `Locacoes` possui uma restrição `UNIQUE` para garantir essa cardinalidade.

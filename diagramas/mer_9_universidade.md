@@ -5,6 +5,12 @@ erDiagram
     Alunos {
         TEXT matricula PK
         TEXT nome
+        TEXT data_nascimento
+    }
+    Professores {
+        TEXT matricula PK
+        TEXT nome
+        TEXT titulacao
     }
     Cursos {
         TEXT codigo PK
@@ -19,8 +25,8 @@ erDiagram
     Matriculas {
         TEXT aluno_matricula PK, FK
         TEXT disciplina_codigo PK, FK
+        TEXT semestre PK
         REAL nota
-        TEXT semestre
     }
     CursoDisciplina {
         TEXT curso_codigo PK, FK
@@ -31,21 +37,18 @@ erDiagram
         TEXT prerequisito_codigo PK, FK
     }
 
-    Alunos }o--o{ Disciplinas : "se matricula em"
-    Cursos }o--o{ Disciplinas : "é composto por"
-    Disciplinas }o--o{ Disciplinas : "tem como pré-requisito"
-
-    Matriculas }o--|| Alunos : "de"
-    Matriculas }o--|| Disciplinas : "em"
-    CursoDisciplina }o--|| Cursos : "de"
-    CursoDisciplina }o--|| Disciplinas : "em"
-    Prerequisitos }o--|| Disciplinas : "requer"
-    Prerequisitos }o--|| Disciplinas : "é requerido por"
+    Alunos ||--o{ Matriculas : "realiza"
+    Disciplinas ||--o{ Matriculas : "contém"
+    Cursos ||--o{ CursoDisciplina : "possui"
+    Disciplinas ||--o{ CursoDisciplina : "compõe"
+    Disciplinas ||--o{ Prerequisitos : "é pré-requisito de"
+    Disciplinas ||--o{ Prerequisitos : "tem como pré-requisito"
 ```
 
 ## Entidades
 
 - **Alunos**: Cadastro dos estudantes da universidade
+- **Professores**: Cadastro de professores da universidade
 - **Cursos**: Programas acadêmicos oferecidos pela universidade com duração em semestres
 - **Disciplinas**: Componentes curriculares com carga horária definida
 - **Matriculas**: Tabela de junção que registra alunos matriculados em disciplinas com notas e semestre
@@ -54,9 +57,10 @@ erDiagram
 
 ## Relacionamentos
 
-- Um **Aluno** pode se matricular em várias **Disciplinas**, e uma **Disciplina** pode ter vários **Alunos** (relacionamento N:M via Matriculas)
-- Um **Curso** é composto por várias **Disciplinas**, e uma **Disciplina** pode fazer parte de vários **Cursos** (relacionamento N:M via CursoDisciplina)
-- Uma **Disciplina** pode ter várias outras como pré-requisito, e pode ser pré-requisito de várias outras (auto-relacionamento N:M via Prerequisitos)
+- Um **Aluno** pode realizar várias **Matriculas**, mas cada **Matricula** é de um único **Aluno**.
+- Uma **Disciplina** pode estar contida em várias **Matriculas**, e cada **Matricula** é de uma única **Disciplina**.
+- Um **Curso** pode possuir várias **Disciplinas** em sua grade, e uma **Disciplina** pode compor a grade de vários **Cursos** (relacionamento N:M via CursoDisciplina).
+- Uma **Disciplina** pode ter outra como pré-requisito (auto-relacionamento N:M via Prerequisitos).
 - Recursos avançados:
   - **Auto-relacionamento**: A tabela Prerequisitos relaciona Disciplinas com elas mesmas, permitindo definir dependências curriculares
   - `disciplina_codigo` → disciplina que POSSUI o pré-requisito

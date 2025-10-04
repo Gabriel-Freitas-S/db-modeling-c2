@@ -426,6 +426,13 @@ textarea {
     background-color: var(--error-600);
 }
 
+/* Botão Copiado (feedback visual) */
+.btn-copiado {
+    background-color: #22c55e !important;
+    color: white !important;
+    transition: all var(--transition-base);
+}
+
 /* Grupo de Botões */
 .btn-group {
     display: flex;
@@ -1611,6 +1618,64 @@ html {
 .btn:focus {
     outline: 2px solid var(--primary-600);
     outline-offset: 2px;
+}
+
+/* ===================================
+   BOTÃO VOLTAR AO TOPO
+   =================================== */
+
+.btn-voltar-topo {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-voltar-topo:hover {
+    background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-600) 100%);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+.btn-voltar-topo:active {
+    transform: translateY(-1px);
+}
+
+.btn-voltar-topo.visivel {
+    opacity: 1;
+    visibility: visible;
+}
+
+.btn-voltar-topo:focus-visible {
+    outline: 3px solid var(--primary-400);
+    outline-offset: 3px;
+}
+
+/* Responsivo para mobile */
+@media (max-width: 768px) {
+    .btn-voltar-topo {
+        bottom: 15px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
 }
 
 /* Print styles para contextos */

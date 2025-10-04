@@ -106,7 +106,7 @@ CREATE TABLE Livros (
 CREATE TABLE Exemplares (
     exemplar_id INTEGER PRIMARY KEY AUTOINCREMENT,
     livro_isbn TEXT NOT NULL,
-    status TEXT NOT NULL CHECK(status IN ('Disponível', 'Emprestado', 'Manutenção')),
+    status TEXT NOT NULL CHECK(UPPER(status) IN ('DISPONÍVEL', 'EMPRESTADO', 'MANUTENÇÃO')),
     FOREIGN KEY (livro_isbn) REFERENCES Livros(isbn)
 );
 
@@ -123,9 +123,9 @@ CREATE TABLE Emprestimos (
     emprestimo_id INTEGER PRIMARY KEY AUTOINCREMENT,
     exemplar_id INTEGER NOT NULL,
     usuario_id INTEGER NOT NULL,
-    data_retirada TEXT NOT NULL, -- Formato: 'YYYY-MM-DD HH:MM:SS'
-    data_devolucao_prevista TEXT NOT NULL,
-    data_devolucao_real TEXT, -- Nulo enquanto o livro não for devolvido
+    data_retirada TEXT NOT NULL CHECK(DATE(data_retirada) IS NOT NULL), -- Formato: 'YYYY-MM-DD HH:MM:SS'
+    data_devolucao_prevista TEXT NOT NULL CHECK(DATE(data_devolucao_prevista) IS NOT NULL),
+    data_devolucao_real TEXT CHECK(data_devolucao_real IS NULL OR DATE(data_devolucao_real) IS NOT NULL), -- Nulo enquanto o livro não for devolvido
     FOREIGN KEY (exemplar_id) REFERENCES Exemplares(exemplar_id),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
 );`
@@ -226,7 +226,7 @@ CREATE TABLE Emprestimos (
 CREATE TABLE Alunos (
     matricula TEXT PRIMARY KEY,
     nome TEXT NOT NULL,
-    data_nascimento TEXT,
+    data_nascimento TEXT CHECK(data_nascimento IS NULL OR DATE(data_nascimento) IS NOT NULL),
     telefone TEXT
 );
 
@@ -358,7 +358,7 @@ CREATE TABLE Medicos (
 CREATE TABLE Pacientes (
     cpf TEXT PRIMARY KEY,
     nome TEXT NOT NULL,
-    data_nascimento TEXT NOT NULL,
+    data_nascimento TEXT NOT NULL CHECK(DATE(data_nascimento) IS NOT NULL),
     telefone TEXT
 );
 
@@ -366,8 +366,8 @@ CREATE TABLE Consultas (
     consulta_id INTEGER PRIMARY KEY AUTOINCREMENT,
     medico_crm TEXT NOT NULL,
     paciente_cpf TEXT NOT NULL,
-    data_hora TEXT NOT NULL UNIQUE, -- Uma consulta por data/hora
-    valor REAL,
+    data_hora TEXT NOT NULL UNIQUE CHECK(DATE(data_hora) IS NOT NULL), -- Uma consulta por data/hora
+    valor REAL CHECK(valor IS NULL OR valor >= 0),
     FOREIGN KEY (medico_crm) REFERENCES Medicos(crm),
     FOREIGN KEY (paciente_cpf) REFERENCES Pacientes(cpf)
 );
@@ -482,15 +482,15 @@ CREATE TABLE Produtos (
     produto_id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
     descricao TEXT,
-    preco REAL NOT NULL CHECK(preco > 0),
+    preco REAL NOT NULL CHECK(preco >= 0),
     estoque INTEGER NOT NULL CHECK(estoque >= 0)
 );
 
 CREATE TABLE Pedidos (
     pedido_id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_cpf TEXT NOT NULL,
-    data_pedido TEXT NOT NULL,
-    status TEXT NOT NULL CHECK(status IN ('Pendente', 'Processando', 'Enviado', 'Entregue', 'Cancelado')),
+    data_pedido TEXT NOT NULL CHECK(DATE(data_pedido) IS NOT NULL),
+    status TEXT NOT NULL CHECK(UPPER(status) IN ('PENDENTE', 'PROCESSANDO', 'ENVIADO', 'ENTREGUE', 'CANCELADO')),
     FOREIGN KEY (cliente_cpf) REFERENCES Clientes(cpf)
 );
 
@@ -499,7 +499,7 @@ CREATE TABLE PedidoItens (
     pedido_id INTEGER NOT NULL,
     produto_id INTEGER NOT NULL,
     quantidade INTEGER NOT NULL CHECK(quantidade > 0),
-    preco_unitario REAL NOT NULL, -- Preço no momento da compra para histórico
+    preco_unitario REAL NOT NULL CHECK(preco_unitario >= 0), -- Preço no momento da compra para histórico
     FOREIGN KEY (pedido_id) REFERENCES Pedidos(pedido_id),
     FOREIGN KEY (produto_id) REFERENCES Produtos(produto_id),
     PRIMARY KEY (pedido_id, produto_id)
@@ -617,7 +617,7 @@ CREATE TABLE Usuarios (
     usuario_id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome_usuario TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
-    data_cadastro TEXT NOT NULL
+    data_cadastro TEXT NOT NULL CHECK(DATE(data_cadastro) IS NOT NULL)
 );
 
 CREATE TABLE Albuns (
@@ -625,7 +625,7 @@ CREATE TABLE Albuns (
     usuario_id INTEGER NOT NULL,
     titulo TEXT NOT NULL,
     descricao TEXT,
-    data_criacao TEXT NOT NULL,
+    data_criacao TEXT NOT NULL CHECK(DATE(data_criacao) IS NOT NULL),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
 );
 
@@ -634,7 +634,7 @@ CREATE TABLE Fotos (
     album_id INTEGER NOT NULL,
     url_imagem TEXT NOT NULL UNIQUE,
     titulo TEXT,
-    data_upload TEXT NOT NULL,
+    data_upload TEXT NOT NULL CHECK(DATE(data_upload) IS NOT NULL),
     FOREIGN KEY (album_id) REFERENCES Albuns(album_id)
 );
 
@@ -643,7 +643,7 @@ CREATE TABLE Comentarios (
     foto_id INTEGER NOT NULL,
     usuario_id INTEGER NOT NULL,
     texto TEXT NOT NULL,
-    data_comentario TEXT NOT NULL,
+    data_comentario TEXT NOT NULL CHECK(DATE(data_comentario) IS NOT NULL),
     FOREIGN KEY (foto_id) REFERENCES Fotos(foto_id),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
 );
@@ -744,7 +744,7 @@ CREATE TABLE Funcionarios (
     matricula TEXT PRIMARY KEY,
     nome TEXT NOT NULL,
     cpf TEXT NOT NULL UNIQUE,
-    data_admissao TEXT NOT NULL
+    data_admissao TEXT NOT NULL CHECK(DATE(data_admissao) IS NOT NULL)
 );
 
 CREATE TABLE Departamentos (
@@ -755,7 +755,7 @@ CREATE TABLE Departamentos (
 CREATE TABLE Cargos (
     cargo_id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL UNIQUE,
-    salario_base REAL NOT NULL
+    salario_base REAL NOT NULL CHECK(salario_base >= 0)
 );
 
 -- Tabela para registrar o histórico de alocações de funcionários
@@ -764,8 +764,8 @@ CREATE TABLE HistoricoAlocacoes (
     funcionario_matricula TEXT NOT NULL,
     departamento_id INTEGER NOT NULL,
     cargo_id INTEGER NOT NULL,
-    data_inicio TEXT NOT NULL,
-    data_fim TEXT, -- Fica NULL para a alocação atual
+    data_inicio TEXT NOT NULL CHECK(DATE(data_inicio) IS NOT NULL),
+    data_fim TEXT CHECK(data_fim IS NULL OR DATE(data_fim) IS NOT NULL), -- Fica NULL para a alocação atual
     FOREIGN KEY (funcionario_matricula) REFERENCES Funcionarios(matricula),
     FOREIGN KEY (departamento_id) REFERENCES Departamentos(depto_id),
     FOREIGN KEY (cargo_id) REFERENCES Cargos(cargo_id)
@@ -906,15 +906,15 @@ CREATE TABLE Veiculos (
     marca TEXT NOT NULL,
     ano INTEGER,
     cor TEXT,
-    status TEXT NOT NULL CHECK(status IN ('Disponível', 'Locado', 'Em Manutenção'))
+    status TEXT NOT NULL CHECK(UPPER(status) IN ('DISPONÍVEL', 'LOCADO', 'EM MANUTENÇÃO'))
 );
 
 CREATE TABLE Reservas (
     reserva_id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_cnh TEXT NOT NULL,
     veiculo_placa TEXT NOT NULL,
-    data_inicio_prevista TEXT NOT NULL,
-    data_fim_prevista TEXT NOT NULL,
+    data_inicio_prevista TEXT NOT NULL CHECK(DATE(data_inicio_prevista) IS NOT NULL),
+    data_fim_prevista TEXT NOT NULL CHECK(DATE(data_fim_prevista) IS NOT NULL),
     FOREIGN KEY (cliente_cnh) REFERENCES Clientes(cnh),
     FOREIGN KEY (veiculo_placa) REFERENCES Veiculos(placa)
 );
@@ -924,9 +924,9 @@ CREATE TABLE Locacoes (
     reserva_id INTEGER UNIQUE, -- Uma reserva gera no máximo uma locação
     cliente_cnh TEXT NOT NULL,
     veiculo_placa TEXT NOT NULL,
-    data_retirada TEXT NOT NULL,
-    data_devolucao TEXT,
-    valor_total REAL,
+    data_retirada TEXT NOT NULL CHECK(DATE(data_retirada) IS NOT NULL),
+    data_devolucao TEXT CHECK(data_devolucao IS NULL OR DATE(data_devolucao) IS NOT NULL),
+    valor_total REAL CHECK(valor_total IS NULL OR valor_total >= 0),
     km_retirada INTEGER,
     km_devolucao INTEGER,
     FOREIGN KEY (reserva_id) REFERENCES Reservas(reserva_id),
@@ -937,9 +937,9 @@ CREATE TABLE Locacoes (
 CREATE TABLE Manutencoes (
     manutencao_id INTEGER PRIMARY KEY AUTOINCREMENT,
     veiculo_placa TEXT NOT NULL,
-    data_manutencao TEXT NOT NULL,
+    data_manutencao TEXT NOT NULL CHECK(DATE(data_manutencao) IS NOT NULL),
     tipo TEXT NOT NULL,
-    custo REAL,
+    custo REAL CHECK(custo IS NULL OR custo >= 0),
     FOREIGN KEY (veiculo_placa) REFERENCES Veiculos(placa)
 );`
     },
@@ -1054,13 +1054,13 @@ CREATE TABLE Vendedores (
 CREATE TABLE Clientes (
     cliente_id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
-    limite_credito REAL DEFAULT 0.0
+    limite_credito REAL DEFAULT 0.0 CHECK(limite_credito >= 0)
 );
 
 CREATE TABLE Produtos (
     produto_id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
-    preco REAL NOT NULL,
+    preco REAL NOT NULL CHECK(preco >= 0),
     estoque INTEGER NOT NULL
 );
 
@@ -1068,9 +1068,9 @@ CREATE TABLE Vendas (
     venda_id INTEGER PRIMARY KEY AUTOINCREMENT,
     vendedor_id INTEGER NOT NULL,
     cliente_id INTEGER NOT NULL,
-    data_venda TEXT NOT NULL,
-    valor_total REAL NOT NULL,
-    valor_comissao REAL NOT NULL, -- Armazena o valor da comissão no momento da venda
+    data_venda TEXT NOT NULL CHECK(DATE(data_venda) IS NOT NULL),
+    valor_total REAL NOT NULL CHECK(valor_total >= 0),
+    valor_comissao REAL NOT NULL CHECK(valor_comissao >= 0), -- Armazena o valor da comissão no momento da venda
     FOREIGN KEY (vendedor_id) REFERENCES Vendedores(vendedor_id),
     FOREIGN KEY (cliente_id) REFERENCES Clientes(cliente_id)
 );
@@ -1079,7 +1079,7 @@ CREATE TABLE VendaItens (
     venda_id INTEGER NOT NULL,
     produto_id INTEGER NOT NULL,
     quantidade INTEGER NOT NULL,
-    preco_unitario REAL NOT NULL,
+    preco_unitario REAL NOT NULL CHECK(preco_unitario >= 0),
     FOREIGN KEY (venda_id) REFERENCES Vendas(venda_id),
     FOREIGN KEY (produto_id) REFERENCES Produtos(produto_id),
     PRIMARY KEY (venda_id, produto_id)
@@ -1203,7 +1203,7 @@ CREATE TABLE VendaItens (
 CREATE TABLE Alunos (
     matricula TEXT PRIMARY KEY,
     nome TEXT NOT NULL,
-    data_nascimento TEXT
+    data_nascimento TEXT CHECK(data_nascimento IS NULL OR DATE(data_nascimento) IS NOT NULL)
 );
 
 CREATE TABLE Professores (
@@ -1398,7 +1398,7 @@ CREATE TABLE Matriculas (
 CREATE TABLE Pacientes (
     paciente_id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
-    data_nascimento TEXT,
+    data_nascimento TEXT CHECK(data_nascimento IS NULL OR DATE(data_nascimento) IS NOT NULL),
     plano_saude TEXT
 );
 
@@ -1417,7 +1417,7 @@ CREATE TABLE Quartos (
 CREATE TABLE Leitos (
     leito_id INTEGER PRIMARY KEY AUTOINCREMENT,
     quarto_id INTEGER NOT NULL,
-    status TEXT NOT NULL CHECK(status IN ('Livre', 'Ocupado', 'Manutenção')),
+    status TEXT NOT NULL CHECK(UPPER(status) IN ('LIVRE', 'OCUPADO', 'MANUTENÇÃO')),
     FOREIGN KEY (quarto_id) REFERENCES Quartos(quarto_id)
 );
 
@@ -1425,7 +1425,7 @@ CREATE TABLE Consultas (
     consulta_id INTEGER PRIMARY KEY AUTOINCREMENT,
     paciente_id INTEGER NOT NULL,
     medico_crm TEXT NOT NULL,
-    data_hora TEXT NOT NULL,
+    data_hora TEXT NOT NULL CHECK(DATE(data_hora) IS NOT NULL),
     diagnostico TEXT,
     FOREIGN KEY (paciente_id) REFERENCES Pacientes(paciente_id),
     FOREIGN KEY (medico_crm) REFERENCES Medicos(crm)
@@ -1435,9 +1435,9 @@ CREATE TABLE Internacoes (
     internacao_id INTEGER PRIMARY KEY AUTOINCREMENT,
     paciente_id INTEGER NOT NULL,
     leito_id INTEGER NOT NULL,
-    data_entrada TEXT NOT NULL,
-    data_alta_prevista TEXT,
-    data_alta_efetiva TEXT,
+    data_entrada TEXT NOT NULL CHECK(DATE(data_entrada) IS NOT NULL),
+    data_alta_prevista TEXT CHECK(data_alta_prevista IS NULL OR DATE(data_alta_prevista) IS NOT NULL),
+    data_alta_efetiva TEXT CHECK(data_alta_efetiva IS NULL OR DATE(data_alta_efetiva) IS NOT NULL),
     FOREIGN KEY (paciente_id) REFERENCES Pacientes(paciente_id),
     FOREIGN KEY (leito_id) REFERENCES Leitos(leito_id)
 );
@@ -1448,7 +1448,7 @@ CREATE TABLE Exames (
     consulta_id INTEGER, -- Pode ser nulo
     internacao_id INTEGER, -- Pode ser nulo
     tipo_exame TEXT NOT NULL,
-    data_solicitacao TEXT NOT NULL,
+    data_solicitacao TEXT NOT NULL CHECK(DATE(data_solicitacao) IS NOT NULL),
     resultado TEXT,
     FOREIGN KEY (paciente_id) REFERENCES Pacientes(paciente_id),
     FOREIGN KEY (consulta_id) REFERENCES Consultas(consulta_id),

@@ -4,7 +4,7 @@ CREATE TABLE Usuarios (
     usuario_id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome_usuario TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
-    data_cadastro TEXT NOT NULL
+    data_cadastro TEXT NOT NULL CHECK(DATE(data_cadastro) IS NOT NULL)
 );
 
 CREATE TABLE Albuns (
@@ -12,7 +12,7 @@ CREATE TABLE Albuns (
     usuario_id INTEGER NOT NULL,
     titulo TEXT NOT NULL,
     descricao TEXT,
-    data_criacao TEXT NOT NULL,
+    data_criacao TEXT NOT NULL CHECK(DATE(data_criacao) IS NOT NULL),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE Fotos (
     album_id INTEGER NOT NULL,
     url_imagem TEXT NOT NULL UNIQUE,
     titulo TEXT,
-    data_upload TEXT NOT NULL,
+    data_upload TEXT NOT NULL CHECK(DATE(data_upload) IS NOT NULL),
     FOREIGN KEY (album_id) REFERENCES Albuns(album_id)
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE Comentarios (
     foto_id INTEGER NOT NULL,
     usuario_id INTEGER NOT NULL,
     texto TEXT NOT NULL,
-    data_comentario TEXT NOT NULL,
+    data_comentario TEXT NOT NULL CHECK(DATE(data_comentario) IS NOT NULL),
     FOREIGN KEY (foto_id) REFERENCES Fotos(foto_id),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
 );

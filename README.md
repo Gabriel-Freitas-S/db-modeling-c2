@@ -301,6 +301,82 @@ Um hospital precisa integrar ambulatório, internação e laboratório. Paciente
 
 ---
 
+## ✨ Funcionalidades da Interface
+
+### 🎨 Experiência do Usuário (UX)
+
+A interface web do projeto foi desenvolvida com foco na usabilidade e experiência do usuário, incluindo várias funcionalidades que facilitam a navegação e interação:
+
+#### 📋 Feedback Visual ao Copiar SQL
+
+**Funcionalidade:** Quando o usuário clica no botão "Copiar SQL", recebe feedback visual imediato.
+
+**Implementação:**
+- **Mudança de texto:** O botão exibe "Copiado!" temporariamente
+- **Estilo visual:** Classe CSS [`btn-copiado`](pagina/css/style.css) adiciona feedback visual
+- **Mensagem flutuante:** Notificação de sucesso aparece no canto superior direito
+- **Duração:** Feedback dura 2 segundos antes de retornar ao estado original
+
+**Benefícios para o usuário:**
+- ✅ Confirmação imediata da ação realizada
+- ✅ Reduz incerteza sobre o sucesso da operação
+- ✅ Melhora a confiança na interface
+
+**Código:** [`copiarSQL()`](pagina/js/main.js:379) em [`main.js`](pagina/js/main.js:1)
+
+#### ⬆️ Botão "Voltar ao Topo"
+
+**Funcionalidade:** Botão flutuante que aparece durante o scroll e permite retorno rápido ao topo da página.
+
+**Implementação:**
+- **Aparição automática:** Exibido após rolar 300px para baixo
+- **Animação suave:** Transição CSS suave ao aparecer/desaparecer
+- **Scroll suave:** Animação [`smooth`](pagina/js/main.js:541) ao clicar
+- **Posicionamento fixo:** Sempre visível no canto inferior direito
+
+**Benefícios para o usuário:**
+- ✅ Navegação rápida em páginas longas (10 contextos)
+- ✅ Melhora acessibilidade
+- ✅ Reduz fadiga do usuário
+
+**Código:**
+- Controle de visibilidade: [`window scroll event`](pagina/js/main.js:521)
+- Ação de clique: [`voltarTopo click handler`](pagina/js/main.js:540)
+
+#### 🔄 Lazy Loading de Diagramas
+
+**Funcionalidade:** Diagramas Mermaid são carregados apenas quando visíveis na viewport.
+
+**Implementação:**
+- **Intersection Observer API:** Detecta quando diagrama entra na viewport
+- **Placeholder com loading:** Mostra spinner enquanto não carregado
+- **Margem de 100px:** Pré-carrega diagramas próximos à viewport
+
+**Benefícios para o usuário:**
+- ✅ Carregamento inicial mais rápido
+- ✅ Melhor performance em dispositivos móveis
+- ✅ Economia de recursos do navegador
+
+**Código:** [`inicializarLazyLoading()`](pagina/js/main.js:208) e [`renderizarDiagramaMermaid()`](pagina/js/main.js:236)
+
+#### 🎯 Navegação Rápida entre Contextos
+
+**Funcionalidade:** Menu lateral com links diretos para cada um dos 10 contextos.
+
+**Implementação:**
+- Links gerados dinamicamente a partir dos dados
+- Scroll suave ao clicar em qualquer contexto
+- Identificadores únicos para cada seção
+
+**Benefícios para o usuário:**
+- ✅ Acesso rápido a qualquer contexto
+- ✅ Visão geral dos contextos disponíveis
+- ✅ Navegação intuitiva
+
+**Código:** [`configurarNavegacao()`](pagina/js/main.js:271) e [`scrollToContexto()`](pagina/js/main.js:293)
+
+---
+
 ## 💻 Como Usar o Projeto
 
 ### Opção 1: Visualizar a Interface Web
@@ -450,6 +526,54 @@ SELECT * FROM Produtos; # Consultar dados
 - ✨ Integridade referencial com Foreign Keys
 - ✨ Documentação através de comentários
 - ✨ Índices implícitos em PKs e FKs
+
+### Validações de Dados (CHECK Constraints)
+
+O projeto implementa validações robustas em todos os 10 arquivos SQL para garantir a integridade e qualidade dos dados:
+
+#### 🔒 Validação de Formato de Datas
+- **Constraint:** `CHECK(DATE(campo) IS NOT NULL)`
+- **Objetivo:** Garantir que datas seguem o formato padrão `YYYY-MM-DD`
+- **Contextos:** Todos os 10 contextos (57+ validações de data implementadas)
+- **Exemplo:** [`Emprestimos.data_retirada`](sql/1_biblioteca.sql:33) no Sistema de Biblioteca
+
+#### 💰 Validação de Valores Monetários
+- **Constraint:** `CHECK(valor >= 0)`
+- **Objetivo:** Impedir valores negativos em campos monetários
+- **Aplicação:** Preços, salários, custos, valores totais
+- **Contextos:** 7 contextos (18+ validações implementadas)
+- **Exemplos:**
+  - [`Produtos.preco`](sql/4_ecommerce.sql:15) no E-commerce
+  - [`Cargos.salario_base`](sql/6_rh.sql:758) no Sistema de RH
+  - [`Vendas.valor_total`](sql/8_vendas.sql:1072) no Sistema de Vendas
+
+#### 📊 Normalização de Strings de Status
+- **Constraint:** `CHECK(UPPER(status) IN (...))`
+- **Objetivo:** Garantir consistência nos valores de status usando uppercase
+- **Aplicação:** Status de exemplares, pedidos, veículos, leitos
+- **Contextos:** 5 contextos (8+ validações implementadas)
+- **Exemplos:**
+  - [`Exemplares.status`](sql/1_biblioteca.sql:16): `'DISPONÍVEL'`, `'EMPRESTADO'`, `'MANUTENÇÃO'`
+  - [`Pedidos.status`](sql/4_ecommerce.sql:23): `'PENDENTE'`, `'PROCESSANDO'`, `'ENVIADO'`, `'ENTREGUE'`, `'CANCELADO'`
+  - [`Veiculos.status`](sql/7_locadora.sql:16): `'DISPONÍVEL'`, `'LOCADO'`, `'EM MANUTENÇÃO'`
+
+#### ✅ Validações de Quantidade e Estoque
+- **Constraint:** `CHECK(quantidade > 0)` ou `CHECK(estoque >= 0)`
+- **Objetivo:** Garantir valores lógicos para quantidades e estoques
+- **Contextos:** E-commerce, Vendas
+- **Exemplos:**
+  - [`PedidoItens.quantidade`](sql/4_ecommerce.sql:31): Deve ser maior que zero
+  - [`Produtos.estoque`](sql/4_ecommerce.sql:16): Não pode ser negativo
+
+#### 📈 Resumo de Validações por Categoria
+
+| Categoria | Quantidade | Contextos Afetados |
+|-----------|------------|-------------------|
+| **Validação de Datas** | 57+ | Todos os 10 contextos |
+| **Valores Monetários** | 18+ | 7 contextos |
+| **Status Normalizados** | 8+ | 5 contextos |
+| **Quantidades/Estoques** | 5+ | 2 contextos |
+| **Total de Validações** | **88+** | **10 contextos** |
 
 ---
 
@@ -638,6 +762,65 @@ Desenvolvido como projeto prático de estudo e ensino de modelagem de banco de d
 - ✅ **Técnicas avançadas** (histórico temporal, valores calculados, ciclo de vida)
 - ✅ **Normalização** aplicada (1NF, 2NF, 3NF)
 - ✅ **Constraints completas** (PK, FK, UNIQUE, CHECK, NOT NULL, DEFAULT)
+
+---
+
+## 🏆 Qualidade de Código
+
+O projeto segue boas práticas de desenvolvimento e documentação em todas as camadas:
+
+### 📝 Documentação SQL
+- **Comentários descritivos:** Cada tabela tem comentário explicando seu propósito
+- **Constraints documentadas:** Validações importantes têm comentários inline
+- **Organização consistente:** Estrutura padronizada em todos os 10 arquivos
+- **Exemplos de uso:** Comentários indicam formato esperado dos dados
+
+### 💻 Código JavaScript
+
+#### Organização e Estrutura
+- **Separação de responsabilidades:** Dados ([`contextos-data.js`](pagina/js/contextos-data.js:1)) separados da lógica ([`main.js`](pagina/js/main.js:1))
+- **Funções bem definidas:** Cada função tem uma responsabilidade única
+- **Nomenclatura clara:** Nomes de variáveis e funções são descritivos
+- **Constantes globais:** Configurações centralizadas e documentadas
+
+#### Comentários e Documentação
+- **Seções organizadas:** Código dividido em seções com delimitadores visuais
+- **JSDoc style:** Funções principais documentadas com descrições
+- **Comentários inline:** Explicações em pontos-chave do código
+- **Cabeçalhos de seção:** Cada bloco funcional tem cabeçalho explicativo
+
+**Exemplo de estrutura:**
+```javascript
+// ============================================================================
+// SEÇÃO: DESCRIÇÃO
+// ============================================================================
+
+/**
+ * Descrição da função
+ * @param {tipo} parametro - Descrição do parâmetro
+ */
+function nomeFuncao(parametro) {
+    // Lógica bem comentada
+}
+```
+
+#### Performance e Otimização
+- **Lazy Loading:** Diagramas carregados sob demanda
+- **Event Delegation:** Uso eficiente de event listeners
+- **Caching de dados:** SQL embutido para evitar múltiplas requisições
+- **Intersection Observer:** Detecção eficiente de visibilidade
+
+#### Tratamento de Erros
+- **Try-catch blocks:** Captura de erros em operações críticas
+- **Fallbacks:** Alternativas quando recursos não estão disponíveis
+- **Mensagens claras:** Feedback informativo para o usuário
+- **Console logging:** Logs para debugging durante desenvolvimento
+
+### 🎨 Boas Práticas de UX
+- **Feedback imediato:** Confirmação visual de todas as ações
+- **Estados de loading:** Indicadores durante carregamentos
+- **Mensagens informativas:** Comunicação clara com o usuário
+- **Acessibilidade:** Navegação facilitada e controles intuitivos
 
 ---
 

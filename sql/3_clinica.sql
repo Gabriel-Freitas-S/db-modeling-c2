@@ -10,7 +10,7 @@ CREATE TABLE Medicos (
 CREATE TABLE Pacientes (
     cpf TEXT PRIMARY KEY,
     nome TEXT NOT NULL,
-    data_nascimento TEXT NOT NULL,
+    data_nascimento TEXT NOT NULL CHECK(DATE(data_nascimento) IS NOT NULL),
     telefone TEXT
 );
 
@@ -18,8 +18,8 @@ CREATE TABLE Consultas (
     consulta_id INTEGER PRIMARY KEY AUTOINCREMENT,
     medico_crm TEXT NOT NULL,
     paciente_cpf TEXT NOT NULL,
-    data_hora TEXT NOT NULL UNIQUE, -- Uma consulta por data/hora
-    valor REAL,
+    data_hora TEXT NOT NULL UNIQUE CHECK(DATE(data_hora) IS NOT NULL), -- Uma consulta por data/hora
+    valor REAL CHECK(valor IS NULL OR valor >= 0),
     FOREIGN KEY (medico_crm) REFERENCES Medicos(crm),
     FOREIGN KEY (paciente_cpf) REFERENCES Pacientes(cpf)
 );

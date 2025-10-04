@@ -374,9 +374,18 @@ async function carregarSQL(sqlPath, containerId) {
 }
 
 /**
- * Copia o SQL para a área de transferência
+ * Copia o SQL para a área de transferência com feedback visual
+ * Implementa UX melhorada com:
+ * - Mudança temporária do texto do botão
+ * - Aplicação de classe CSS para feedback visual
+ * - Mensagem flutuante de confirmação
+ *
+ * @param {string} sqlPath - Caminho do arquivo SQL a ser copiado
  */
 async function copiarSQL(sqlPath) {
+    // Encontra o botão que foi clicado
+    const botao = document.querySelector(`[data-sql-path="${sqlPath}"]`);
+    
     try {
         // Extrai o ID do contexto do sqlPath (formato: sql/1_biblioteca.sql)
         const match = sqlPath.match(/\/(\d+)_/);
@@ -405,6 +414,19 @@ async function copiarSQL(sqlPath) {
         }
         
         await navigator.clipboard.writeText(conteudo);
+        
+        // Feedback visual no botão
+        if (botao) {
+            const textoOriginal = botao.textContent;
+            botao.textContent = 'Copiado!';
+            botao.classList.add('btn-copiado');
+            
+            setTimeout(() => {
+                botao.textContent = textoOriginal;
+                botao.classList.remove('btn-copiado');
+            }, 2000);
+        }
+        
         mostrarMensagem('✅ SQL copiado para a área de transferência!', 'sucesso');
         
     } catch (erro) {
@@ -494,6 +516,42 @@ function mostrarErro(mensagem) {
         `;
     }
 }
+
+// ============================================================================
+// BOTÃO VOLTAR AO TOPO
+// ============================================================================
+
+/**
+ * Controla a visibilidade do botão "Voltar ao Topo"
+ * O botão aparece automaticamente após scroll de 300px
+ * Melhora a navegação em páginas longas com múltiplos contextos
+ */
+window.addEventListener('scroll', () => {
+    const botaoVoltar = document.getElementById('voltarTopo');
+    
+    if (!botaoVoltar) return;
+    
+    if (window.scrollY > 300) {
+        botaoVoltar.classList.add('visivel');
+    } else {
+        botaoVoltar.classList.remove('visivel');
+    }
+});
+
+/**
+ * Executa o scroll suave ao topo quando o botão for clicado
+ * Implementa UX melhorada com animação smooth scroll
+ * Facilita o retorno ao início da página após visualizar contextos
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const botaoVoltar = document.getElementById('voltarTopo');
+    
+    if (botaoVoltar) {
+        botaoVoltar.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+});
 
 // ============================================================================
 // CONSOLE LOG

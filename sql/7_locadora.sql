@@ -13,15 +13,15 @@ CREATE TABLE Veiculos (
     marca TEXT NOT NULL,
     ano INTEGER,
     cor TEXT,
-    status TEXT NOT NULL CHECK(status IN ('Disponível', 'Locado', 'Em Manutenção'))
+    status TEXT NOT NULL CHECK(UPPER(status) IN ('DISPONÍVEL', 'LOCADO', 'EM MANUTENÇÃO'))
 );
 
 CREATE TABLE Reservas (
     reserva_id INTEGER PRIMARY KEY AUTOINCREMENT,
     cliente_cnh TEXT NOT NULL,
     veiculo_placa TEXT NOT NULL,
-    data_inicio_prevista TEXT NOT NULL,
-    data_fim_prevista TEXT NOT NULL,
+    data_inicio_prevista TEXT NOT NULL CHECK(DATE(data_inicio_prevista) IS NOT NULL),
+    data_fim_prevista TEXT NOT NULL CHECK(DATE(data_fim_prevista) IS NOT NULL),
     FOREIGN KEY (cliente_cnh) REFERENCES Clientes(cnh),
     FOREIGN KEY (veiculo_placa) REFERENCES Veiculos(placa)
 );
@@ -31,9 +31,9 @@ CREATE TABLE Locacoes (
     reserva_id INTEGER UNIQUE, -- Uma reserva gera no máximo uma locação
     cliente_cnh TEXT NOT NULL,
     veiculo_placa TEXT NOT NULL,
-    data_retirada TEXT NOT NULL,
-    data_devolucao TEXT,
-    valor_total REAL,
+    data_retirada TEXT NOT NULL CHECK(DATE(data_retirada) IS NOT NULL),
+    data_devolucao TEXT CHECK(data_devolucao IS NULL OR DATE(data_devolucao) IS NOT NULL),
+    valor_total REAL CHECK(valor_total IS NULL OR valor_total >= 0),
     km_retirada INTEGER,
     km_devolucao INTEGER,
     FOREIGN KEY (reserva_id) REFERENCES Reservas(reserva_id),
@@ -44,8 +44,8 @@ CREATE TABLE Locacoes (
 CREATE TABLE Manutencoes (
     manutencao_id INTEGER PRIMARY KEY AUTOINCREMENT,
     veiculo_placa TEXT NOT NULL,
-    data_manutencao TEXT NOT NULL,
+    data_manutencao TEXT NOT NULL CHECK(DATE(data_manutencao) IS NOT NULL),
     tipo TEXT NOT NULL,
-    custo REAL,
+    custo REAL CHECK(custo IS NULL OR custo >= 0),
     FOREIGN KEY (veiculo_placa) REFERENCES Veiculos(placa)
 );

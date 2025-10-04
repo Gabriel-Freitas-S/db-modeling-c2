@@ -13,7 +13,7 @@ CREATE TABLE Livros (
 CREATE TABLE Exemplares (
     exemplar_id INTEGER PRIMARY KEY AUTOINCREMENT,
     livro_isbn TEXT NOT NULL,
-    status TEXT NOT NULL CHECK(status IN ('Disponível', 'Emprestado', 'Manutenção')),
+    status TEXT NOT NULL CHECK(UPPER(status) IN ('DISPONÍVEL', 'EMPRESTADO', 'MANUTENÇÃO')),
     FOREIGN KEY (livro_isbn) REFERENCES Livros(isbn)
 );
 
@@ -30,9 +30,9 @@ CREATE TABLE Emprestimos (
     emprestimo_id INTEGER PRIMARY KEY AUTOINCREMENT,
     exemplar_id INTEGER NOT NULL,
     usuario_id INTEGER NOT NULL,
-    data_retirada TEXT NOT NULL, -- Formato: 'YYYY-MM-DD HH:MM:SS'
-    data_devolucao_prevista TEXT NOT NULL,
-    data_devolucao_real TEXT, -- Nulo enquanto o livro não for devolvido
+    data_retirada TEXT NOT NULL CHECK(DATE(data_retirada) IS NOT NULL), -- Formato: 'YYYY-MM-DD HH:MM:SS'
+    data_devolucao_prevista TEXT NOT NULL CHECK(DATE(data_devolucao_prevista) IS NOT NULL),
+    data_devolucao_real TEXT CHECK(data_devolucao_real IS NULL OR DATE(data_devolucao_real) IS NOT NULL), -- Nulo enquanto o livro não for devolvido
     FOREIGN KEY (exemplar_id) REFERENCES Exemplares(exemplar_id),
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id)
 );

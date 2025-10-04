@@ -3,7 +3,7 @@
 CREATE TABLE Alunos (
     matricula TEXT PRIMARY KEY,
     nome TEXT NOT NULL,
-    data_nascimento TEXT,
+    data_nascimento TEXT CHECK(data_nascimento IS NULL OR DATE(data_nascimento) IS NOT NULL),
     telefone TEXT
 );
 

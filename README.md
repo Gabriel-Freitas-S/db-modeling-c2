@@ -1,7 +1,6 @@
 # 📚 DB Modeling C2 - Banco de Dados e Big Data
 
-![Atividade C2](https://img.shields.io/badge/Atividade-C2%20(2%20pontos)-brightgreen.svg)
-![Individual ou Dupla](https://img.shields.io/badge/Modalidade-Individual%20ou%20Dupla-blue.svg)
+![Atividade C2](https://img.shields.io/badge/Atividade-C2%20-brightgreen.svg)
 ![SQLite](https://img.shields.io/badge/SQLite-3.x-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.x-green.svg)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)

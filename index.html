@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Guia completo de modelagem de banco de dados com SQLite - 10 contextos práticos de sistemas de informação">
-    <meta name="keywords" content="SQLite, Banco de Dados, Modelagem, SQL, Database, Tutorial">
-    <meta name="author" content="Projeto Prático">
-    <title>Guia Completo de Modelagem de Banco de Dados - SQLite</title>
+    <meta name="description" content="Prática Individual ou em Dupla de Modelagem de Banco de Dados - 10 contextos práticos com SQLite, diagramas MER e interface web interativa">
+    <meta name="keywords" content="SQLite, Banco de Dados, Modelagem, SQL, Database, Tutorial, MER, Atividade Prática, C2">
+    <meta name="author" content="Gabriel Freitas Souza, Roberli Schuina Silva">
+    <title>Prática Individual ou em Dupla de Modelagem de Banco de Dados</title>
     <link rel="stylesheet" href="pagina/css/style.css">
     <!-- Biblioteca Prism.js para syntax highlighting SQL -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
@@ -25,8 +25,15 @@
     <!-- Header Principal -->
     <header class="header-principal">
         <div class="container">
-            <h1 class="titulo-principal">📚 Guia Completo de Modelagem de Banco de Dados</h1>
-            <p class="subtitulo">Demonstração prática de 10 contextos de modelagem com SQLite - Visualização Educacional</p>
+            <h1 class="titulo-principal">📚 Prática Individual ou em Dupla de Modelagem de Banco de Dados</h1>
+            <p class="subtitulo">10 contextos práticos de modelagem com SQLite - Diagramas MER e Interface Web Interativa</p>
+            <div class="header-autores">
+                <p class="texto-autores">
+                    <strong>Autores:</strong> 
+                    <a href="https://github.com/Gabriel-Freitas-S" target="_blank" rel="noopener">Gabriel Freitas Souza</a> e 
+                    <a href="https://github.com/RoberliSchuina" target="_blank" rel="noopener">Roberli Schuina Silva</a>
+                </p>
+            </div>
         </div>
     </header>
 
@@ -46,9 +53,10 @@
             <!-- Introdução -->
             <section class="secao-introducao">
                 <div class="card">
-                    <h2>📖 Sobre Este Guia</h2>
-                    <p>Este guia apresenta 10 contextos práticos de modelagem de banco de dados, desde sistemas simples até arquiteturas complexas. Cada contexto demonstra padrões e técnicas específicas de modelagem de dados.</p>
-                    <p>Role a página para explorar todos os contextos. Os diagramas MER são carregados automaticamente conforme você navega.</p>
+                    <h2>📋 Sobre Esta Atividade Prática</h2>
+                    <p>Esta é uma implementação completa da <strong>Atividade Prática C2 de Modelagem de Banco de Dados</strong>, apresentando 10 contextos práticos de sistemas de informação organizados por níveis de complexidade (Baixa → Média → Alta).</p>
+                    <p>Cada contexto demonstra padrões específicos de modelagem de dados com diagramas MER interativos, scripts SQL DDL funcionais e documentação técnica detalhada.</p>
+                    <p>📱 <em>Role a página para explorar todos os contextos. Os diagramas são carregados automaticamente conforme você navega.</em></p>
                 </div>
             </section>
 
@@ -69,31 +77,49 @@
         <div class="container">
             <div class="footer-conteudo">
                 <div class="footer-info">
-                    <h4>Sobre o Projeto</h4>
-                    <p>Este projeto demonstra 10 contextos práticos de modelagem de banco de dados usando SQLite.</p>
-                    <p>Desenvolvido para fins educacionais e de demonstração.</p>
+                    <h4>🎯 Sobre o Projeto</h4>
+                    <p>Implementação da <strong>Atividade Prática C2</strong> de Modelagem de Banco de Dados com 10 contextos práticos organizados por complexidade.</p>
+                    <p>Material educacional desenvolvido para demonstrar padrões de modelagem relacional com SQLite.</p>
                 </div>
                 <div class="footer-tecnologias">
-                    <h4>Tecnologias Utilizadas</h4>
+                    <h4>🚀 Tecnologias Utilizadas</h4>
                     <ul>
-                        <li>HTML5</li>
-                        <li>CSS3</li>
-                        <li>JavaScript (ES6+)</li>
-                        <li>Mermaid.js (Diagramas)</li>
-                        <li>SQLite (Backend)</li>
+                        <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript ES6+</li>
+                        <li><strong>Diagramas:</strong> Mermaid.js (renderização MER)</li>
+                        <li><strong>Database:</strong> SQLite 3.x</li>
+                        <li><strong>Syntax Highlighting:</strong> Prism.js</li>
+                        <li><strong>Interface:</strong> Lazy Loading e UX otimizada</li>
                     </ul>
                 </div>
                 <div class="footer-links">
-                    <h4>Links Úteis</h4>
+                    <h4>🔗 Links Úteis</h4>
                     <ul>
-                        <li><a href="https://www.sqlite.org/" target="_blank" rel="noopener">SQLite Documentation</a></li>
-                        <li><a href="https://mermaid.js.org/" target="_blank" rel="noopener">Mermaid.js</a></li>
-                        <li><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></li>
+                        <li><a href="https://github.com/Gabriel-Freitas-S/db-modeling-c2" target="_blank" rel="noopener">💻 Repositório GitHub</a></li>
+                        <li><a href="https://www.sqlite.org/" target="_blank" rel="noopener">📈 SQLite Documentation</a></li>
+                        <li><a href="https://mermaid.js.org/" target="_blank" rel="noopener">🗺️ Mermaid.js</a></li>
+                        <li><a href="https://prismjs.com/" target="_blank" rel="noopener">🎨 Prism.js</a></li>
                     </ul>
                 </div>
             </div>
+            
+            <!-- Seção de Autores -->
+            <div class="footer-autores">
+                <h4>👥 Autores</h4>
+                <div class="autores-info">
+                    <div class="autor-card">
+                        <strong>Gabriel Freitas Souza</strong>
+                        <p><a href="https://github.com/Gabriel-Freitas-S" target="_blank" rel="noopener">🔗 GitHub: Gabriel-Freitas-S</a></p>
+                    </div>
+                    <div class="autor-card">
+                        <strong>Roberli Schuina Silva</strong>
+                        <p><a href="https://github.com/RoberliSchuina" target="_blank" rel="noopener">🔗 GitHub: RoberliSchuina</a></p>
+                    </div>
+                </div>
+            </div>
+            
             <div class="footer-copyright">
-                <p>&copy; 2024 Projeto Prático - Modelagem de Banco de Dados. Todos os direitos reservados.</p>
+                <p>&copy; 2025 Prática de Modelagem de Banco de Dados - Gabriel Freitas Souza e Roberli Schuina Silva</p>
+                <p><small>Projeto educacional desenvolvido para atividade acadêmica | Licença MIT</small></p>
             </div>
         </div>
     </footer>

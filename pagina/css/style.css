@@ -169,6 +169,38 @@ header p {
     margin: 0;
 }
 
+/* Estilos para autores no header */
+.header-autores {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.texto-autores {
+    margin: 0;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.texto-autores strong {
+    color: white;
+    font-weight: 600;
+}
+
+.texto-autores a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--transition-base);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.texto-autores a:hover {
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom-color: white;
+    transform: translateY(-1px);
+}
+
 /* ===================================
    MAIN CONTENT
    =================================== */
@@ -674,40 +706,189 @@ tbody tr:last-child td {
 }
 
 /* ===================================
-   FOOTER
+   FOOTER PRINCIPAL E SEÇÃO DE AUTORES
    =================================== */
 
-footer {
+.footer-principal {
     background-color: white;
     border-top: 1px solid var(--gray-200);
-    padding: var(--spacing-lg) 0;
+    padding: var(--spacing-2xl) 0 var(--spacing-lg);
     margin-top: auto;
     box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
 }
 
-footer .container {
+.footer-conteudo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+@media (min-width: 768px) {
+    .footer-conteudo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .footer-conteudo {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.footer-info,
+.footer-tecnologias,
+.footer-links {
+    padding: var(--spacing-lg);
+    background: var(--gray-50);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200);
+}
+
+.footer-info h4,
+.footer-tecnologias h4,
+.footer-links h4 {
+    color: var(--primary-700);
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
     display: flex;
-    flex-direction: column;
     align-items: center;
     gap: var(--spacing-sm);
+}
+
+.footer-info p {
+    color: var(--gray-700);
+    font-size: 0.95rem;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.6;
+}
+
+.footer-tecnologias ul,
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.footer-tecnologias li,
+.footer-links li {
+    color: var(--gray-700);
+    font-size: 0.9rem;
+    padding: var(--spacing-xs) 0;
+}
+
+.footer-links a {
+    color: var(--primary-600);
+    text-decoration: none;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.footer-links a:hover {
+    color: var(--primary-700);
+    text-decoration: underline;
+    transform: translateX(3px);
+}
+
+/* Seção de Autores */
+.footer-autores {
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--gray-50) 100%);
+    border: 2px solid var(--primary-200);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
     text-align: center;
 }
 
-footer p {
-    color: var(--gray-700);
-    font-size: 0.9rem;
-    margin: 0;
+.footer-autores h4 {
+    color: var(--primary-700);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
 }
 
-footer a {
+.autores-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+    .autores-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.autor-card {
+    background: white;
+    border: 2px solid var(--primary-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-sm);
+}
+
+.autor-card:hover {
+    border-color: var(--primary-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+}
+
+.autor-card strong {
+    display: block;
+    color: var(--primary-700);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+
+.autor-card p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.autor-card a {
     color: var(--primary-600);
     text-decoration: none;
-    transition: color var(--transition-base);
+    transition: all var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    font-weight: 500;
 }
 
-footer a:hover {
+.autor-card a:hover {
     color: var(--primary-700);
     text-decoration: underline;
+    transform: scale(1.05);
+}
+
+/* Copyright */
+.footer-copyright {
+    text-align: center;
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--gray-200);
+}
+
+.footer-copyright p {
+    color: var(--gray-700);
+    font-size: 0.9rem;
+    margin: var(--spacing-xs) 0;
+}
+
+.footer-copyright small {
+    color: var(--gray-500);
+    font-size: 0.8rem;
 }
 
 /* ===================================
@@ -840,6 +1021,18 @@ footer a:hover {
     
     .btn {
         width: 100%;
+    }
+    
+    .header-autores {
+        text-align: center;
+    }
+    
+    .footer-autores {
+        padding: var(--spacing-lg);
+    }
+    
+    .footer-autores h4 {
+        font-size: 1.25rem;
     }
 }
 
